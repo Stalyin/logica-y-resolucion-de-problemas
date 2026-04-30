@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arreglos de Edades</title>
+    <link rel="stylesheet" href="arreglos.css">
+</head>
+
+<body>
+
+    <main class="contenedor">
+        <h1>Gestión de Arreglos de Edades</h1>
+
+        <section class="formulario">
+            <div class="form-actions">
+                <input type="number" id="edad" placeholder="Ingrese una edad">
+                <button onclick="agregarEdad();">Agregar</button>
+                <button onclick="limpiarTablas();">Limpiar Tablas</button>
+            </div>
+            <small id="txtInput"></small>
+        </section>
+
+        <section class="tablas">
+            <div class="tabla-contenedor">
+                <h2>Arreglo Izquierdo</h2>    
+                <button class="btn-moverTodo" onclick="moverTodoHaciaDerecha();">Mover Todo ➜</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Valor</th>
+                            <th>Eliminar</th>
+                            <th>Mover</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaIzquierda">
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tabla-contenedor">
+                <h2>Arreglo Derecho</h2>
+                <button class="btn-moverTodo" onclick="moverTodoHaciaIzquierda();">⬅ Mover Todo</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mover</th>
+                            <th>Valor</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaDerecha">
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="utilitarios.js"></script>
+</body>
+
+</html>
