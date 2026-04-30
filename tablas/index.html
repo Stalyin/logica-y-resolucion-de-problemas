@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tablas de Multiplicar | Stangic</title>
+
+  <link rel="stylesheet" href="multiplicar.css" />
+</head>
+<body onload="validar()">
+
+  <main class="page">
+
+    <section class="app-card">
+
+      <section class="left-panel">
+
+        <div class="hero-text">
+          <p class="tag">Aprende con Stangic KIDS</p>
+
+          <div class="title-hero">
+            <h1>
+            Tabla del
+            </h1>
+            <div class="input-tabla">
+                <div class="info-text">
+                    <p class="hand-icon">👇</p>
+                    <span>Escribe aqui</span>
+                </div>
+                <input 
+                    type="number" 
+                    class="valores" 
+                    id="txtValor" 
+                    placeholder="0"
+                    min="1"
+                >
+            </div>
+          </div>
+
+          <p class="description">
+            Practica las tablas de Multiplicar, en nuestra página colorida y fácil de usar.
+            Presiona el botón para ver la Tabla <span id="txtTableInfo"></span>
+          </p>
+
+          <button class="btn-probar" onclick="generarTablas()">
+            <span class="play-icon">▶</span>
+            Probar
+          </button>
+        </div>
+
+      </section>
+
+      <section class="right-panel">
+
+        <div class="tabla-card" id="tabla">
+
+          <div class="rigth-info" id="badge">
+            <p id="txtAyuda">Elige un número y te mostraré su tabla de multiplicar al instante.</p>
+          </div>
+
+          <img src="./images/welcome.png" alt="" width="500" id="imgCard">
+          
+        </div>
+        <div id="tablaResultados"></div>
+
+      </section>
+
+      <footer class="footer">
+        <span>♥</span>
+        <p>Hecho por <strong>Cristian Peña</strong></p>
+      </footer>
+
+    </section>
+
+  </main>
+
+  <script src="multiplicar.js"></script>
+</body>
+</html>
