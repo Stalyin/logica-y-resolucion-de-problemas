@@ -11,6 +11,7 @@ let creditoAprobado = false;
 function ocultarSecciones() {
   let seccion1 = recuperarElemento("clientes").classList.remove("activa");
   let seccion2 = recuperarElemento("parametros").classList.remove("activa");
+  let seccion3 = recuperarElemento("credito").classList.remove("activa");
 }
 
 function mostrarSeccion(id) {
@@ -127,4 +128,157 @@ function limpiar() {
   recuperarElemento("apellido").value = "";
   recuperarElemento("ingresos").value = "";
   recuperarElemento("egresos").value = "";
+}
+
+function buscarClienteCredito() {
+  let cmpCedula = recuperarTexto("buscarCedulaCredito");
+  let cliente = buscarCliente(cmpCedula);
+
+  let resultadoCliente = recuperarElemento("datosClienteCredito");
+  let contenedor = "";
+
+  clienteSeleccionado = null;
+
+  if (cliente !== null) {
+    clienteSeleccionado = cliente;
+
+    contenedor = `
+                  <h3>Datos del Cliente</h3>
+                  <p><strong>Cédula:</strong>${cliente.cedula}</p>
+                  <p><strong>Nombre:</strong>${cliente.nombre}</p>
+                  <p><strong>Apellido:</strong>${cliente.apellido}</p>
+                  <p><strong>Ingresos:</strong>${cliente.ingresos}</p>
+                  <p><strong>Egresos:</strong>${cliente.egresos}</p>
+                   `;
+  } else {
+    contenedor = `
+                 <h3> El cliente no Existe </h3>
+                 `;
+  }
+
+  resultadoCliente.innerHTML = contenedor;
+}
+
+function formatearDinero(valor) {
+  return new Intl.NumberFormat("es-EC", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(valor);
+}
+
+function calcularCredito() {
+  let montoCredito = recuperarFloat("montoCredito");
+  let plazoCredito = recuperarInt("plazoCredito");
+  let resultadoCredito = recuperarElemento("resultadoCredito");
+  let contenedor = "";
+
+  resultadoCredito.classList.remove("aprobado");
+  resultadoCredito.classList.remove("rechazado");
+
+  if (clienteSeleccionado === null) {
+    contenedor = `
+      <h3>No es posible calcular</h3>
+      <p>Por favor busca y selecciona un cliente existente.</p>
+    `;
+
+    resultadoCredito.innerHTML = contenedor;
+    return;
+  }
+
+  if (isNaN(montoCredito) || montoCredito <= 0) {
+    contenedor = `
+      <h3>Monto inválido</h3>
+      <p>Ingresa un monto de crédito válido.</p>
+    `;
+
+    resultadoCredito.innerHTML = contenedor;
+    return;
+  }
+
+  if (isNaN(plazoCredito) || plazoCredito <= 0) {
+    contenedor = `
+      <h3>Plazo inválido</h3>
+      <p>Ingresa un plazo válido en años.</p>
+    `;
+
+    resultadoCredito.innerHTML = contenedor;
+    return;
+  }
+
+  let montoDisponible = calcularDisponible(
+    clienteSeleccionado.ingresos,
+    clienteSeleccionado.egresos,
+  );
+
+  let capacidadPago = calcularCapacidadPago(montoDisponible);
+  let interes = calcularInteresSimple(montoCredito, tasaInteres, plazoCredito);
+  let totalPago = calcularTotalPagar(montoCredito, interes);
+  let cuotaMensual = calcularCuotaMensual(totalPago, plazoCredito);
+  let estadoCredito = aprobarCredito(capacidadPago, cuotaMensual);
+
+  let mensaje = "";
+
+  if (!estadoCredito) {
+    resultadoCredito.classList.add("rechazado");
+    mensaje = "RECHAZADO";
+  } else {
+    resultadoCredito.classList.add("aprobado");
+    mensaje = "APROBADO";
+  }
+
+  cuotaCalculada = cuotaMensual;
+  montoCalculado = montoCredito;
+  plazoCalculado = plazoCredito;
+  creditoAprobado = estadoCredito;
+
+  contenedor = `
+    <h3>Resultados Crédito</h3>
+
+    <p><strong>Capacidad de pago:</strong> $${formatearDinero(capacidadPago)}</p>
+    <p><strong>Total a pagar:</strong> $${formatearDinero(totalPago)}</p>
+    <p><strong>Cuota mensual:</strong> $${formatearDinero(cuotaMensual)}</p>
+
+    <br>
+
+    <p><strong>Resultado:</strong> ${mensaje}</p>
+  `;
+
+  resultadoCredito.innerHTML = contenedor;
+}
+
+function calcularDisponible(ingresos, egresos) {
+  let resultado = ingresos - egresos;
+  if (resultado < 0) {
+    return 0;
+  }
+  return resultado;
+}
+
+function calcularCapacidadPago(montoDisponible) {
+  let capacidad = montoDisponible * 0.5;
+  return capacidad;
+}
+
+function calcularInteresSimple(monto, tasa, plazoAnios) {
+  let interes = plazoAnios * monto * (tasa / 100);
+  return interes;
+}
+
+function calcularTotalPagar(monto, interes) {
+  let total = monto + interes + 100;
+  return total;
+}
+
+function calcularCuotaMensual(total, plazoAnios) {
+  let meses = plazoAnios * 12;
+  let cuota = total / meses;
+  return cuota;
+}
+
+function aprobarCredito(capacidadPago, cuotaMensual) {
+  if (capacidadPago > cuotaMensual) {
+    return true;
+  } else {
+    return false;
+  }
 }

@@ -12,7 +12,7 @@ function recuperarElemento(idComponente) {
 }
 
 function recuperarInt(idComponente) {
-  let valorCaja = recuperaraTexto(idComponente);
+  let valorCaja = recuperarTexto(idComponente);
   let valorEntero = parseInt(valorCaja);
   return valorEntero;
 }
