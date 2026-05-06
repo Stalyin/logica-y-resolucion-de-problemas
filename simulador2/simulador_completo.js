@@ -86,7 +86,7 @@ function pintarCliente() {
                     <td>${clientes[indice].egresos}</td>
                     <td>
                       <button onclick="seleccionarCliente('${clientes[indice].cedula}')">Actualizar</button>
-                      <button>Eliminar</button>
+                      <button onclick="eliminar('${clientes[indice]}')">Eliminar</button>
                     </td>
                   </tr>
                   `;
@@ -121,6 +121,28 @@ function seleccionarCliente(cedula) {
     mostrarTextoEnCaja("egresos", clienteSeleccionado.egresos);
   }
 }
+
+function eliminar(indice) {
+  clientes.splice(indice, 1);
+  pintarCliente();
+}
+
+// function eliminarCliente(cedula) {
+//   let confirmar = confirm("¿Seguro que deseas eliminar este cliente?");
+
+//   if (!confirmar) {
+//     return;
+//   }
+
+//   for (let indice = 0; indice < clientes.length; indice++) {
+//     if (clientes[indice].cedula === cedula) {
+//       clientes.splice(indice, 1);
+//       break;
+//     }
+//   }
+
+//   pintarCliente();
+// }
 
 function limpiar() {
   recuperarElemento("cedula").value = "";
@@ -218,13 +240,8 @@ function calcularCredito() {
 
   let mensaje = "";
 
-  if (!estadoCredito) {
-    resultadoCredito.classList.add("rechazado");
-    mensaje = "RECHAZADO";
-  } else {
-    resultadoCredito.classList.add("aprobado");
-    mensaje = "APROBADO";
-  }
+  resultadoCredito.classList.add(!estadoCredito ? "rechazado" : "aprobado");
+  mensaje = estadoCredito ? "Aprobado" : "Rechazado";
 
   cuotaCalculada = cuotaMensual;
   montoCalculado = montoCredito;
@@ -234,9 +251,9 @@ function calcularCredito() {
   contenedor = `
     <h3>Resultados Crédito</h3>
 
-    <p><strong>Capacidad de pago:</strong> $${formatearDinero(capacidadPago)}</p>
-    <p><strong>Total a pagar:</strong> $${formatearDinero(totalPago)}</p>
-    <p><strong>Cuota mensual:</strong> $${formatearDinero(cuotaMensual)}</p>
+    <p><strong>Capacidad de pago:</strong> $ ${formatearDinero(capacidadPago)}</p>
+    <p><strong>Total a pagar:</strong> $ ${formatearDinero(totalPago)}</p>
+    <p><strong>Cuota mensual:</strong> $ ${formatearDinero(cuotaMensual)}</p>
 
     <br>
 
