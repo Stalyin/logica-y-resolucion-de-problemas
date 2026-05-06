@@ -12,6 +12,7 @@ function ocultarSecciones() {
   let seccion1 = recuperarElemento("clientes").classList.remove("activa");
   let seccion2 = recuperarElemento("parametros").classList.remove("activa");
   let seccion3 = recuperarElemento("credito").classList.remove("activa");
+  let seccion4 = recuperarElemento("contacto").classList.remove("activa");
 }
 
 function mostrarSeccion(id) {
@@ -38,11 +39,13 @@ function guardarCliente() {
   let cmpApellido = recuperarTexto("apellido");
   let cmpIngresos = recuperarFloat("ingresos");
   let cmpEgresos = recuperarFloat("egresos");
+  let cmpCorreo = recuperarTexto("correo");
 
   if (clienteSeleccionado !== null) {
     clienteSeleccionado.nombre = cmpNombre;
     clienteSeleccionado.apellido = cmpApellido;
     clienteSeleccionado.ingresos = cmpIngresos;
+    clienteSeleccionado.correo = cmpCorreo;
     clienteSeleccionado.egresos = cmpEgresos;
 
     clienteSeleccionado = null;
@@ -63,6 +66,7 @@ function guardarCliente() {
     cedula: cmpCedula,
     nombre: cmpNombre,
     apellido: cmpApellido,
+    correo: cmpCorreo,
     ingresos: cmpIngresos,
     egresos: cmpEgresos,
   };
@@ -82,6 +86,7 @@ function pintarCliente() {
                     <td>${clientes[indice].cedula}</td>
                     <td>${clientes[indice].nombre}</td>
                     <td>${clientes[indice].apellido}</td>
+                    <td>${clientes[indice].correo}</td>
                     <td>${clientes[indice].ingresos}</td>
                     <td>${clientes[indice].egresos}</td>
                     <td>
@@ -117,6 +122,7 @@ function seleccionarCliente(cedula) {
     mostrarTextoEnCaja("cedula", clienteSeleccionado.cedula);
     mostrarTextoEnCaja("nombre", clienteSeleccionado.nombre);
     mostrarTextoEnCaja("apellido", clienteSeleccionado.apellido);
+    mostrarTextoEnCaja("correo", clienteSeleccionado.correo);
     mostrarTextoEnCaja("ingresos", clienteSeleccionado.ingresos);
     mostrarTextoEnCaja("egresos", clienteSeleccionado.egresos);
   }
@@ -148,6 +154,7 @@ function limpiar() {
   recuperarElemento("cedula").value = "";
   recuperarElemento("nombre").value = "";
   recuperarElemento("apellido").value = "";
+  recuperarElemento("correo").value = "";
   recuperarElemento("ingresos").value = "";
   recuperarElemento("egresos").value = "";
 }
@@ -191,6 +198,7 @@ function formatearDinero(valor) {
 function calcularCredito() {
   let montoCredito = recuperarFloat("montoCredito");
   let plazoCredito = recuperarInt("plazoCredito");
+  let solicitarCredito = recuperarElemento("btnSolicitarCredito");
   let resultadoCredito = recuperarElemento("resultadoCredito");
   let contenedor = "";
 
@@ -243,6 +251,10 @@ function calcularCredito() {
   resultadoCredito.classList.add(!estadoCredito ? "rechazado" : "aprobado");
   mensaje = estadoCredito ? "Aprobado" : "Rechazado";
 
+  if (estadoCredito) {
+    solicitarCredito.disabled = false;
+  }
+
   cuotaCalculada = cuotaMensual;
   montoCalculado = montoCredito;
   plazoCalculado = plazoCredito;
@@ -262,6 +274,8 @@ function calcularCredito() {
 
   resultadoCredito.innerHTML = contenedor;
 }
+
+function solicitarCredito() {}
 
 function calcularDisponible(ingresos, egresos) {
   let resultado = ingresos - egresos;
