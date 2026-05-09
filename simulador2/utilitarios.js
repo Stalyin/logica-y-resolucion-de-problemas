@@ -37,3 +37,41 @@ function mostrarImagen(idComponente, rutaImagen) {
   componente = document.getElementById(idComponente);
   componente.src = rutaImagen;
 }
+
+function validarCedula(cedula) {
+  if (cedula.length !== 10) {
+    return false;
+  }
+
+  if (isNaN(cedula)) {
+    return false;
+  }
+
+  return true;
+}
+
+function validarContacto(contacto) {
+  if (contacto.length !== 10) {
+    return false;
+  }
+
+  if (isNaN(contacto)) {
+    return false;
+  }
+
+  return true;
+}
+
+function capitalizarTexto(nombre) {
+  let texto = nombre.trim().toLowerCase();
+
+  let primeraLetra = texto.charAt(0).toUpperCase();
+  let restoNombre = texto.slice(1);
+
+  return primeraLetra + restoNombre;
+}
+
+function validarTexto(valor) {
+  let soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/.test(valor);
+  return soloLetras;
+}
